@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>
+      <h1>Micro Logistics</h1>
+    </span>
+
+    <span class="filler"></span>
+
+    <span *ngIf="userLoggedIn()" class="nav_link">
+      <a mat-stroked-button [routerLink]="['user/logout']">Log Out</a>
+    </span>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,28 @@
+<h3>Logged In As: {{username}}</h3>
+<fieldset>
+  <legend>Update Password</legend>
+
+  <div *ngIf="successes" class="success">
+    <p *ngFor="let success of successes">{{success}}</p>
+  </div>
+
+  <div *ngIf="errors" class="error">
+    <p *ngFor="let error of errors">{{error}}</p>
+  </div>
+
+  <input matInput
+    type="password"
+    [(ngModel)]="newPassword"
+    (ngModelChange)="checkUserInput()"
+    placeholder="New Password"
+  />
+  <input matInput
+    type="password"
+    [(ngModel)]="verifyPassword"
+    (ngModelChange)="checkUserInput()"
+    placeholder="Verify Password"
+  />
+  <button mat-raised-button (click)="updatePassword()" [disabled]="!newPassword || !verifyPassword || (newPassword !== verifyPassword)">
+    Update Password
+  </button>
+</fieldset>

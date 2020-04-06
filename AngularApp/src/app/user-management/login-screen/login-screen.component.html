@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-title>
+    Please Log In
+  </mat-card-title>
+  <mat-card-content>
+    <div
+      class="alert alert-danger"
+      *ngIf="errors">
+      Invalid Credentials. Please Try Again.
+    </div>
+
+    <div>
+    <mat-form-field>
+      <input matInput class="form_input" type="text" id="username" [(ngModel)]="inputUsername" placeholder="Username"/>
+    </mat-form-field>
+    </div>
+    <div>
+    <mat-form-field>
+      <input matInput class="form_input" type="password" id="password" [(ngModel)]="inputPassword"
+             placeholder="Password"/>
+    </mat-form-field>
+    </div>
+    <button mat-raised-button (click)="logInClickHandler()">Log In</button>
+  </mat-card-content>
+</mat-card>

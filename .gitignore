@@ -1,0 +1,14 @@
+**/.idea
+**/env
+**/venv
+**/node_modules
+**/__pycache__
+*.sqlite3
+*.pyc
+*.DS_Store
+
+.editorconfig
+package-lock.json
+
+
+**/migrations

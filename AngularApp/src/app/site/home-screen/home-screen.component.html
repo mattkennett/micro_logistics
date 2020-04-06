@@ -1,0 +1,19 @@
+<div *ngIf="currentUser$ | async as currentUser; else loading">
+  <mat-card>
+    <div *ngIf="currentUser.providesStock">
+              <app-current-stock-screen [stockRole]="'provide'"></app-current-stock-screen>
+    </div>
+
+    <div *ngIf="currentUser.needsStock">
+          <app-current-stock-screen [stockRole]="'request'"></app-current-stock-screen>
+    </div>
+
+
+  </mat-card>
+</div>
+
+<ng-template #loading>
+  <div>
+    <mat-card>Loading... Please Wait</mat-card>
+  </div>
+</ng-template>

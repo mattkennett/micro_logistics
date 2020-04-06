@@ -1,0 +1,104 @@
+<div *ngIf="showForm; else chooseRole">
+  <h1>Fill Out This Form to Register</h1>
+  <div [hidden]="!this.errorMessage">
+    {{errorMessage}}
+  </div>
+  <form (ngSubmit)="register()"
+    #newUserForm="ngForm">
+    <div>
+      <h2>Your Info</h2>
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email"
+             required
+             [(ngModel)]="newUser.email"/>
+    </div>
+    <div>
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName"
+             required
+             [(ngModel)]="newUser.firstName"/>
+    </div>
+    <div>
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName"
+             required
+             [(ngModel)]="newUser.lastName"/>
+    </div>
+    <div>
+      <label for="organization">Organization:</label>
+      <input type="text" id="organization" name="organization"
+             [(ngModel)]="newUser.organization"/>
+    </div>
+    <div>
+      <label for="phone">Phone Number:</label>
+      <input type="text" id="phone" name="phone"
+             required
+             [(ngModel)]="newUser.phone"/>
+    </div>
+    <div>
+      <h2>Your Address</h2>
+    </div>
+    <div>
+      <label for="street1">Street 1:</label>
+      <input type="text" id="street1" name="street1"
+             required
+             [(ngModel)]="newUser.street1"/>
+    </div>
+    <div>
+      <label for="street2">Street 2:</label>
+      <input type="text" id="street2" name="street2"
+             [(ngModel)]="newUser.street2"/>
+    </div>
+    <div>
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city"
+             required
+             [(ngModel)]="newUser.city"/>
+    </div>
+    <div>
+      <label for="county">County:</label>
+      <input type="text" id="county" name="county"
+             required
+             [(ngModel)]="newUser.county"/>
+    </div>
+    <div>
+      <label for="state">State:</label>
+      <input type="text" id="state" name="state"
+             required
+             [(ngModel)]="newUser.state"/>
+    </div>
+    <div>
+      <label for="zip">Zip:</label>
+      <input type="text" id="zip" name="zip"
+             required
+             [(ngModel)]="newUser.zip"/>
+    </div>
+
+    <div>
+      <h2>Choose a Password</h2>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"
+             required
+             [(ngModel)]="newUser.password"/>
+    </div>
+    <div>
+      <label for="passwordVerify">Verify:</label>
+      <input type="password" id="passwordVerify" name="passwordVerify"
+             required
+             [(ngModel)]="passwordVerify"/>
+    </div>
+
+    <button color="primary" mat-raised-button type="submit"
+    [disabled]="!newUserForm.form.valid">Register</button>
+  </form>
+</div>
+
+<ng-template #chooseRole>
+  <h2>Register for Micro Logistics</h2>
+  <button mat-raised-button color="primary" (click)="setUserType('hasStuff');">I Have Stuff!</button>
+  <button mat-raised-button color="warn" (click)="setUserType('needsStuff');">I Need Stuff!</button>
+</ng-template>
