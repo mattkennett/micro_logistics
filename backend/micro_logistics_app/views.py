@@ -53,6 +53,25 @@ class StockView(APIView):
             return Response(serializer.errors)
 
 
+class StockSearchView(APIView):
+    def post(self, request, **kwargs):
+        # This is where the search will happen
+        queryset = Stock.objects.all().filter(
+            count__gt=0,
+        ).order_by('stock_type')
+
+        results = []
+
+        for result in queryset:
+            results.append({
+                'id': result.pk,
+                'zip': result.user.zip,
+                'stockType': result.stock_type.name,
+                'count': result.count,
+            })
+        return Response(results)
+
+
 variable_map = {
     'email_verified': 'emailVerified',
     'is_superuser': 'isSuperuser',

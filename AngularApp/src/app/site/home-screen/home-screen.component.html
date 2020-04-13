@@ -1,11 +1,18 @@
 <div *ngIf="currentUser$ | async as currentUser; else loading">
   <mat-card>
     <div *ngIf="currentUser.providesStock">
-              <app-current-stock-screen [stockRole]="'provide'"></app-current-stock-screen>
+      <app-current-stock-screen [stockRole]="'provide'"></app-current-stock-screen>
     </div>
 
     <div *ngIf="currentUser.needsStock">
+      <mat-tab-group>
+        <mat-tab label="Stock Needed">
           <app-current-stock-screen [stockRole]="'request'"></app-current-stock-screen>
+        </mat-tab>
+        <mat-tab label="Search for Stock">
+          <app-stock-search-screen></app-stock-search-screen>
+        </mat-tab>
+      </mat-tab-group>
     </div>
 
 

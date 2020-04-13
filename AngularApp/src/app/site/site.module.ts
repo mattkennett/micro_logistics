@@ -14,6 +14,7 @@ import {MaterialModule} from '../material-module';
 import { CurrentStockScreenComponent } from './current-stock-screen/current-stock-screen.component';
 import { IndexScreenComponent } from './index-screen/index-screen.component';
 import {UserManagementModule} from '../user-management/user-management.module';
+import { StockSearchScreenComponent } from './stock-search-screen/stock-search-screen.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {UserManagementModule} from '../user-management/user-management.module';
     NotFoundScreenComponent,
     CurrentStockScreenComponent,
     IndexScreenComponent,
+    StockSearchScreenComponent,
   ],
   imports: [
     RouterModule,

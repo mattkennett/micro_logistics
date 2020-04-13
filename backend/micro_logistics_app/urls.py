@@ -14,4 +14,5 @@ urlpatterns = [
     path('stock_type/', StockTypeView.as_view(), name='stock_type'),
     path('current_stock/', CurrentStockView.as_view(), name='current_stock'),
     path('stock/', StockView.as_view(), name='stock'),
+    path('stock/search/', StockSearchView.as_view(), name='stock_search'),
 ]

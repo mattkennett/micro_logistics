@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {SiteUser, Stock} from '../../data-classes';
 import {MicroLogisticsApiService} from '../../micro-logistics-api.service';
-import {share, tap} from 'rxjs/operators';
+import {share} from 'rxjs/operators';
 
 @Component({
   selector: 'app-current-stock-screen',
@@ -18,7 +18,6 @@ export class CurrentStockScreenComponent implements OnInit {
 
   newStock = new Stock();
 
-  currentStockHeading: string;
   addFormHeading: string;
   stockTypeMessage: string;
   addButtonMessage: string;
@@ -33,16 +32,13 @@ export class CurrentStockScreenComponent implements OnInit {
     this.stockTypes$ = this.apiService.getStockTypes().pipe(share());
     this.currentStock$ = this.apiService.getCurrentStock().pipe(share());
     this.currentUser$ = this.apiService.getUserProfile().pipe(share());
-    console.log(this.stockRole);
 
     if (this.stockRole === 'provide') {
-      this.currentStockHeading = 'Stock on Hand';
       this.addFormHeading = 'Add Stock';
       this.stockTypeMessage = 'I Have';
       this.addButtonMessage = 'Add Stock';
       this.noStockMessage = 'No Stock Added Yet';
     } else {
-      this.currentStockHeading = 'Stock Needed';
       this.addFormHeading = 'Request Stock';
       this.stockTypeMessage = 'I Need';
       this.addButtonMessage = 'Request Stock';

@@ -118,3 +118,14 @@ class StockSerializer(serializers.Serializer):
             )
             new_stock.save()
             return new_stock
+
+
+class StockSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stock
+        fields = (
+            'id',
+            'user',
+            'stock_type',
+            'count',
+        )

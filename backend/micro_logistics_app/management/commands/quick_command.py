@@ -7,6 +7,6 @@ class Command(BaseCommand):
     help = ''
 
     def handle(self, *args, **kwargs):
-        initial_stock_type = StockType(stock_type='3D Printed Face Shield')
+        initial_stock_type = StockType(name='3D Printed Face Shield')
         initial_stock_type.save()
 

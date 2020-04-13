@@ -13,6 +13,7 @@ const URL_NEW_PASSWORD = URL_ROOT + '/api/update_password/';
 const URL_STOCK_TYPE = URL_ROOT + '/api/stock_type/';
 const URL_CURRENT_STOCK = URL_ROOT + '/api/current_stock/';
 const URL_STOCK = URL_ROOT + '/api/stock/';
+const URL_STOCK_SEARCH = URL_ROOT + '/api/stock/search/';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,15 @@ export class MicroLogisticsApiService {
       name,
       count,
     });
+  }
+
+  searchStock(searchParameters: object): Observable<any> {
+    return this.http.post(URL_STOCK_SEARCH, searchParameters).pipe(
+      tap(
+      result => {
+        console.log(result);
+      }
+      )
+    );
   }
 }

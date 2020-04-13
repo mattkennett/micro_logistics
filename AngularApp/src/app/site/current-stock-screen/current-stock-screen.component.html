@@ -1,7 +1,4 @@
 <div *ngIf="currentUser$ | async as currentUser; else loading">
-  <div>
-    <h2>{{currentStockHeading}}</h2>
-  </div>
   <div *ngIf="currentStock$ | async as currentStock" class="pl-4 pr-4">
     <table class="table table-striped">
       <thead>
