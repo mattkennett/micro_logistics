@@ -129,3 +129,68 @@ class StockSearchSerializer(serializers.ModelSerializer):
             'stock_type',
             'count',
         )
+
+
+class ClaimInputSerializer(serializers.Serializer):
+    stock_id = serializers.IntegerField()
+    count = serializers.IntegerField()
+
+    def validate_count(self, count):
+        if count < 1:
+            raise serializers.ValidationError('Count must be a positive integer')
+
+        try:
+            stock_object = Stock.objects.get(pk=self.initial_data['stock_id'])
+            if count > stock_object.count:
+                raise serializers.ValidationError('Invalid claim request')
+        except Stock.DoesNotExist:
+            raise serializers.ValidationError('Invalid stockId')
+        except Exception as e:
+            raise e
+
+        return count
+
+    def save(self, **kwargs):
+        # self.validated_data has all of our validated variables at this point
+        user = kwargs.get('user', None)
+
+        if not user:
+            raise serializers.ValidationError('User Must Be Passed to StockSerializer to save')
+
+        try:
+            existing_stock = Stock.objects.get(pk=self.validated_data['stock_id'])
+            new_claim = Claim(
+                claimed_by=user,
+                claimed_from=existing_stock.user,
+                stock_type=existing_stock.stock_type,
+                count=self.validated_data['count'],
+            )
+
+            new_claim.save()
+
+            existing_stock.count = existing_stock.count - self.validated_data['count']
+            existing_stock.save()
+        except Exception as e:
+            raise e
+
+
+class ClaimModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Claim
+        fields = (
+            'claimed_by',
+            'claimed_from',
+            'stock_type',
+            'count',
+            'delivery_timestamp',
+        )
+
+
+class StockTypeModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StockType
+        fields = (
+            'id',
+            'name',
+            'description',
+        )

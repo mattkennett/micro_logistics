@@ -20,9 +20,20 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return Response(python_to_js(serializer.data))
 
 
-class StockTypeView(generics.ListAPIView):
+class StockTypeListView(generics.ListAPIView):
     queryset = StockType.objects.all()
     serializer_class = StockTypeSerializer
+
+
+class StockTypeView(APIView):
+    def get(self, request, **kwargs):
+        try:
+            queryset = StockType.objects.get(id=kwargs['id'])
+        except StockType.DoesNotExist:
+            return Response({'status': 'error'})
+
+        serializer = StockTypeSerializer(queryset)
+        return Response(serializer.data)
 
 
 class CurrentStockView(generics.ListCreateAPIView):
@@ -70,6 +81,27 @@ class StockSearchView(APIView):
                 'count': result.count,
             })
         return Response(results)
+
+
+class ClaimView(APIView):
+    serializer_class = ClaimInputSerializer
+
+    def post(self, request, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response({'status': 'success'})
+        else:
+            return Response(serializer.errors)
+
+
+class ClaimListView(generics.ListAPIView):
+    def list(self, request, **kwargs):
+        queryset = Claim.objects.filter(claimed_by=request.user)
+        serializer = ClaimModelSerializer(queryset, many=True)
+
+        return Response(serializer.data)
 
 
 variable_map = {

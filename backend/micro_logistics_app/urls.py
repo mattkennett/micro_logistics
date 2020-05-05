@@ -11,8 +11,12 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('profile/', ProfileView.as_view(), name='profile'),
 
-    path('stock_type/', StockTypeView.as_view(), name='stock_type'),
+    path('stock_type/', StockTypeListView.as_view(), name='stock_type_list'),
+    path('stock_type/<int:id>', StockTypeView.as_view(), name='stock_type'),
     path('current_stock/', CurrentStockView.as_view(), name='current_stock'),
     path('stock/', StockView.as_view(), name='stock'),
     path('stock/search/', StockSearchView.as_view(), name='stock_search'),
+
+    path('claim/', ClaimView.as_view(), name='claim'),
+    path('current_claims/', ClaimListView.as_view(), name='current_claims'),
 ]

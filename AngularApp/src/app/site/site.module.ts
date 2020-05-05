@@ -15,6 +15,7 @@ import { CurrentStockScreenComponent } from './current-stock-screen/current-stoc
 import { IndexScreenComponent } from './index-screen/index-screen.component';
 import {UserManagementModule} from '../user-management/user-management.module';
 import { StockSearchScreenComponent } from './stock-search-screen/stock-search-screen.component';
+import { ClaimedStockComponent } from './claimed-stock/claimed-stock.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { StockSearchScreenComponent } from './stock-search-screen/stock-search-s
     CurrentStockScreenComponent,
     IndexScreenComponent,
     StockSearchScreenComponent,
+    ClaimedStockComponent,
   ],
   imports: [
     RouterModule,

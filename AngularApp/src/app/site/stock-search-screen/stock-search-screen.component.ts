@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MicroLogisticsApiService} from '../../micro-logistics-api.service';
 import {Observable} from 'rxjs';
-import {share} from 'rxjs/operators';
+import {share, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-stock-search-screen',
@@ -11,6 +11,11 @@ import {share} from 'rxjs/operators';
 export class StockSearchScreenComponent implements OnInit {
   searchResults$: Observable<any>;
   displayedColumns: string[] = ['stockType', 'zip', 'count', 'claim'];
+  displayClaimDetails = false;
+  errorMessage: string;
+  claimAvailable: number;
+  claimClaimed: number;
+  claimStockId: number;
 
   constructor(
     private apiService: MicroLogisticsApiService
@@ -18,6 +23,24 @@ export class StockSearchScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchResults$ = this.apiService.searchStock({}).pipe(share());
+  }
+
+  startClaim(stockId: number, count: number): void {
+    this.displayClaimDetails = true;
+    this.claimAvailable = count;
+    this.claimStockId = stockId;
+  }
+
+  submitClaim(): void {
+    this.apiService.createClaim(this.claimStockId, this.claimClaimed).subscribe(
+        response => {
+          if (response.status && response.status === 'success') {
+            // This means the claim was created successfully
+            this.claimClaimed = null;
+            this.searchResults$ = this.apiService.searchStock({}).pipe(share());
+          }
+        }
+    );
   }
 
 }

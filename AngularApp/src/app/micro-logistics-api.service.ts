@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import {SiteUser, Stock} from './data-classes';
+import {SiteUser, Stock, StockType} from './data-classes';
 import {URL_ROOT} from './globals';
 import {Observable, of} from 'rxjs';
 import {tap} from 'rxjs/operators';
@@ -14,79 +14,104 @@ const URL_STOCK_TYPE = URL_ROOT + '/api/stock_type/';
 const URL_CURRENT_STOCK = URL_ROOT + '/api/current_stock/';
 const URL_STOCK = URL_ROOT + '/api/stock/';
 const URL_STOCK_SEARCH = URL_ROOT + '/api/stock/search/';
+const URL_CLAIM = URL_ROOT + '/api/claim/';
+const URL_CURRENT_CLAIM = URL_ROOT + '/api/current_claims/';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MicroLogisticsApiService {
-  private currentUser: SiteUser;
+    private currentUser: SiteUser;
+    private stockTypes: {};
 
-  constructor(
-    private http: HttpClient,
-  ) {
-    this.currentUser = null;
-  }
-
-  registerUser(newUser: SiteUser): Observable<any> {
-    return this.http.post(URL_REGISTER, {
-      password: newUser.password,
-      email: newUser.email,
-      first_name: newUser.firstName,
-      last_name: newUser.lastName,
-      provides_stock: newUser.providesStock,
-      needs_stock: newUser.needsStock,
-      street_1: newUser.street1,
-      street_2: newUser.street2,
-      city: newUser.city,
-      county: newUser.county,
-      state: newUser.state,
-      zip: newUser.zip,
-      phone: newUser.phone,
-    });
-  }
-
-  getUserProfile(): Observable<SiteUser> {
-    if (this.currentUser) {
-      return of(this.currentUser);
-    } else {
-      return this.http.get(URL_PROFILE).pipe(
-        tap(response => {
-          if (response['id']) {
-            this.currentUser = response;
-          }
-        }),
-      );
+    constructor(
+        private http: HttpClient,
+    ) {
+        this.currentUser = null;
+        this.stockTypes = {};
     }
-  }
 
-  updateUserPassword(newPassword: string): Observable<any> {
-    return this.http.post(URL_NEW_PASSWORD, {new_password: newPassword});
-  }
+    registerUser(newUser: SiteUser): Observable<any> {
+        return this.http.post(URL_REGISTER, {
+            password: newUser.password,
+            email: newUser.email,
+            first_name: newUser.firstName,
+            last_name: newUser.lastName,
+            provides_stock: newUser.providesStock,
+            needs_stock: newUser.needsStock,
+            street_1: newUser.street1,
+            street_2: newUser.street2,
+            city: newUser.city,
+            county: newUser.county,
+            state: newUser.state,
+            zip: newUser.zip,
+            phone: newUser.phone,
+        });
+    }
 
-  getStockTypes(): Observable<any> {
-    return this.http.get(URL_STOCK_TYPE);
-  }
+    getUserProfile(): Observable<SiteUser> {
+        if (this.currentUser) {
+            return of(this.currentUser);
+        } else {
+            return this.http.get(URL_PROFILE).pipe(
+                tap(response => {
+                    if (response['id']) {
+                        this.currentUser = response;
+                    }
+                }),
+            );
+        }
+    }
 
-  getCurrentStock(): Observable<any> {
-    return this.http.get(URL_CURRENT_STOCK).pipe(
-      tap(response => {
-      }));
-  }
+    updateUserPassword(newPassword: string): Observable<any> {
+        return this.http.post(URL_NEW_PASSWORD, {new_password: newPassword});
+    }
 
-  createStock(name: string, count: number): Observable<any> {
-    return this.http.post(URL_STOCK, {
-      name,
-      count,
-    });
-  }
+    getStockTypes(): Observable<any> {
+        return this.http.get(URL_STOCK_TYPE);
+    }
 
-  searchStock(searchParameters: object): Observable<any> {
-    return this.http.post(URL_STOCK_SEARCH, searchParameters).pipe(
-      tap(
-      result => {
-        console.log(result);
-      }
-      )
-    );
-  }
+    getCurrentStock(): Observable<any> {
+        return this.http.get(URL_CURRENT_STOCK).pipe(
+            tap(response => {
+            }));
+    }
+
+    createStock(name: string, count: number): Observable<any> {
+        return this.http.post(URL_STOCK, {
+            name,
+            count,
+        });
+    }
+
+    searchStock(searchParameters: object): Observable<any> {
+        return this.http.post(URL_STOCK_SEARCH, searchParameters);
+    }
+
+    createClaim(stockId: number, count: number): Observable<any> {
+        return this.http.post(URL_CLAIM, {
+            stock_id: stockId,
+            count: count,
+        });
+    }
+
+    listCurrentClaims(): Observable<any> {
+        return this.http.get(URL_CURRENT_CLAIM);
+    }
+
+    getStockTypeName(id: number): string {
+        if (this.stockTypes[id]) {
+            return this.stockTypes[id]['name'];
+        }
+
+        // We don't have the stock type name in memory, we need to fetch it from the REST API
+        this.http.get(URL_STOCK_TYPE + id).pipe(
+            tap(result => {
+                    this.stockTypes[id] = result;
+                    return this.stockTypes[id]['name'];
+                },
+            )
+        );
+    }
 }
+
